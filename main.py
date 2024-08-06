@@ -2,6 +2,7 @@ import json
 from transformers import pipeline
 import pandas as pd
 
+
 if __name__ == '__main__':
     try:
         with open('raw_data.json', 'r') as file:
