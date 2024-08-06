@@ -1,4 +1,5 @@
 import json
+import yaml
 from transformers import pipeline
 import pandas as pd
 
@@ -8,20 +9,34 @@ def inference(classifier, input_text, text_labels):
     return result['sequence'], result['labels'][0]
 
 
-if __name__ == '__main__':
+def load_yaml(file_name):
+    try:
+        with open(file_name, 'r') as file:
+            return yaml.safe_load(file)
+    except FileNotFoundError:
+        print("The file was not found.")
+    except yaml.YAMLError as e:
+        print("Error decoding YAML.")
+
+
+def load_json(file_name):
     try:
         with open('raw_data.json', 'r') as file:
-            data = json.load(file)
-            data = data['conversation']
-            data_size = len(data)
+            return json.load(file)['conversation']
     except FileNotFoundError:
         print("The file was not found.")
     except json.JSONDecodeError:
         print("Error decoding JSON.")
 
+
+if __name__ == '__main__':
+
+    pretrained_model = load_yaml("config.yaml")['model']['main']
+    data = load_json("raw_data.json")
+    data_size = len(data)
     result_table = pd.DataFrame(columns=['step', 'speaker', 'text', 'sentiment', 'intent'])
-    classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli", device=0)
-    # model="tasksource/deberta-base-long-nli", device=0 for GPU utilization
+    classifier = pipeline("zero-shot-classification", model=pretrained_model, device=0)
+    # device=0 for GPU utilization
 
     sentiment_labels = ["very positive", "very negative", "neutral"]
     intent_labels = ["payment", "shipment", "model details", "pricing", "other"]
@@ -36,3 +51,5 @@ if __name__ == '__main__':
                                 'sentiment': sentiment_result,
                                 'intent': [intent_results]})
         result_table = result_table._append(temp_df, ignore_index=True)
+
+    print(result_table)

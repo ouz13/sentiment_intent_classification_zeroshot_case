@@ -1,0 +1,4 @@
+---
+  model:
+    main: "facebook/bart-large-mnli"
+    alternative: "tasksource/deberta-base-long-nli"
