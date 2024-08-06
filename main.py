@@ -3,6 +3,11 @@ from transformers import pipeline
 import pandas as pd
 
 
+def inference(classifier, input_text, text_labels):
+    result = classifier(input_text, text_labels, multi_label=False)
+    return result['sequence'], result['labels'][0]
+
+
 if __name__ == '__main__':
     try:
         with open('raw_data.json', 'r') as file:
