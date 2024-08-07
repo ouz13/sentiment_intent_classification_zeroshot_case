@@ -2,6 +2,8 @@ from utility import load_json, load_yaml
 from transformers import pipeline
 import pandas as pd
 
+SENTIMENT_LABELS = ["very positive", "very negative", "neutral"]
+INTENT_LABELS = ["payment", "shipment", "model details", "pricing", "other"]
 
 def inference(classifier, input_text, text_labels):
     result = classifier(input_text, text_labels, multi_label=False)
@@ -17,13 +19,10 @@ if __name__ == '__main__':
     classifier = pipeline("zero-shot-classification", model=pretrained_model, device=0)
     # device=0 for GPU utilization
 
-    sentiment_labels = ["very positive", "very negative", "neutral"]
-    intent_labels = ["payment", "shipment", "model details", "pricing", "other"]
-
     for i in range(data_size):
         content = data[i]['text']
-        text, sentiment_result = inference(classifier, content, sentiment_labels)
-        text, intent_results = inference(classifier, content, intent_labels)
+        text, sentiment_result = inference(classifier, content, SENTIMENT_LABELS)
+        text, intent_results = inference(classifier, content, INTENT_LABELS)
         temp_df = pd.DataFrame({'step': i + 1,
                                 'speaker': data[i]['speaker'],
                                 'text': text,
