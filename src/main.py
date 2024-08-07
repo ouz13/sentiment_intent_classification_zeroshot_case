@@ -22,7 +22,7 @@ def load_yaml(file_name):
 
 def load_json(file_name):
     try:
-        with open('raw_data.json', 'r') as file:
+        with open('../raw_data.json', 'r') as file:
             return json.load(file)['conversation']
     except FileNotFoundError:
         print("The file was not found.")
@@ -32,11 +32,8 @@ def load_json(file_name):
 
 if __name__ == '__main__':
 
-    project_path = Path(__file__).resolve().parent
-    child_path = project_path / "resources"
-
-    pretrained_model = load_yaml("config.yaml")['model']['main']
-    data = load_json("raw_data.json")
+    pretrained_model = load_yaml("../config.yaml")['model']['main']
+    data = load_json("../raw_data.json")
     data_size = len(data)
     result_table = pd.DataFrame(columns=['step', 'speaker', 'text', 'sentiment', 'intent'])
     classifier = pipeline("zero-shot-classification", model=pretrained_model, device=0)
