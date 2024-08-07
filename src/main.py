@@ -1,6 +1,11 @@
-from utility import load_json, load_yaml, inference
+from utility import load_json, load_yaml
 from transformers import pipeline
 import pandas as pd
+
+
+def inference(classifier, input_text, text_labels):
+    result = classifier(input_text, text_labels, multi_label=False)
+    return result['sequence'], result['labels'][0]
 
 
 if __name__ == '__main__':
@@ -26,4 +31,5 @@ if __name__ == '__main__':
                                 'intent': [intent_results]})
         result_table = result_table._append(temp_df, ignore_index=True)
 
+    result_table.to_csv("results.csv")
     print(result_table)

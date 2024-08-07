@@ -2,11 +2,6 @@ import json
 import yaml
 
 
-def inference(classifier, input_text, text_labels):
-    result = classifier(input_text, text_labels, multi_label=False)
-    return result['sequence'], result['labels'][0]
-
-
 def load_yaml(file_name):
     try:
         with open(file_name, 'r') as file:
@@ -25,3 +20,4 @@ def load_json(file_name):
         print("The file was not found.")
     except json.JSONDecodeError:
         print("Error decoding JSON.")
+
