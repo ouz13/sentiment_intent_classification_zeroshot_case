@@ -2,7 +2,9 @@ import json
 import yaml
 from transformers import pipeline
 import pandas as pd
-
+import importlib.resources
+from pathlib import Path
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 def inference(classifier, input_text, text_labels):
     result = classifier(input_text, text_labels, multi_label=False)
@@ -30,6 +32,11 @@ def load_json(file_name):
 
 
 if __name__ == '__main__':
+
+    project_path = Path(__file__).resolve().parent
+    child_path = project_path / "resources" / "bart-large-mnli"
+    print(str(child_path))
+
 
     pretrained_model = load_yaml("config.yaml")['model']['main']
     data = load_json("raw_data.json")
