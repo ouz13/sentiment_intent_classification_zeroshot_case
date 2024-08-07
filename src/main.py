@@ -16,8 +16,7 @@ if __name__ == '__main__':
     data = load_json("raw_data.json")
     data_size = len(data)
     result_table = pd.DataFrame(columns=['step', 'speaker', 'text', 'sentiment', 'intent'])
-    classifier = pipeline("zero-shot-classification", model=pretrained_model, device=0)
-    # device=0 for GPU utilization
+    classifier = pipeline("zero-shot-classification", model=pretrained_model)
 
     for i in range(data_size):
         content = data[i]['text']
