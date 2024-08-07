@@ -31,5 +31,4 @@ if __name__ == '__main__':
                                 'intent': [intent_results]})
         result_table = result_table._append(temp_df, ignore_index=True)
 
-    result_table.to_csv("results.csv")
     print(result_table)
