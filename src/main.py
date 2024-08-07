@@ -5,6 +5,7 @@ import pandas as pd
 import importlib.resources
 from pathlib import Path
 
+
 def inference(classifier, input_text, text_labels):
     result = classifier(input_text, text_labels, multi_label=False)
     return result['sequence'], result['labels'][0]
