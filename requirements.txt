@@ -1,0 +1,4 @@
+pandas==2.2.2
+PyYAML==6.0.2rc1
+PyYAML==6.0.2
+transformers==4.43.4
