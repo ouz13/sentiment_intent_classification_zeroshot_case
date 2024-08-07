@@ -2,8 +2,6 @@ import json
 import yaml
 from transformers import pipeline
 import pandas as pd
-import importlib.resources
-from pathlib import Path
 
 
 def inference(classifier, input_text, text_labels):
@@ -23,7 +21,7 @@ def load_yaml(file_name):
 
 def load_json(file_name):
     try:
-        with open('../raw_data.json', 'r') as file:
+        with open('../data/' + file_name, 'r') as file:
             return json.load(file)['conversation']
     except FileNotFoundError:
         print("The file was not found.")
@@ -34,7 +32,7 @@ def load_json(file_name):
 if __name__ == '__main__':
 
     pretrained_model = load_yaml("../config.yaml")['model']['main']
-    data = load_json("../raw_data.json")
+    data = load_json("raw_data.json")
     data_size = len(data)
     result_table = pd.DataFrame(columns=['step', 'speaker', 'text', 'sentiment', 'intent'])
     classifier = pipeline("zero-shot-classification", model=pretrained_model, device=0)
